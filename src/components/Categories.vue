@@ -21,7 +21,7 @@
                 this.$store.commit('ADD_CHECKEDCAT', id)
                 this.$store.dispatch('GET_BOOKS')
                 const catsString = this.checkCat.join()
-                this.$router.replace({path: '/', query: {cat: catsString}})
+                this.$router.replace({path: '/', query: {cat: catsString, search: this.search}})
             },
             addActiveClass(id) {
                 if(this.checkCat.indexOf(id) >= 0) {
@@ -36,6 +36,9 @@
             checkCat() {
                 return this.$store.state.checkedCat
             },
+            search() {
+                return this.$store.state.search
+            }
         },
         mounted() {
             this.$store.dispatch('GET_CATEGORIES')
