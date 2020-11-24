@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="book-card">
-            <router-link :to="{path: `/book/${id}`}"><img :src="image" :alt="name" class="book-card__img"></router-link>
+            <img :src="image" :alt="name" class="book-card__img">
             <h4 class="book-card__name" v-html="$options.filters.highlight(name, search)">{{name}}</h4>
             <p class="book-card__description" v-html="$options.filters.highlight(description, search)">{{description}}</p>
             <span class="book-card__author" v-html="$options.filters.highlight(year, search)">Автор: <b>{{year}}</b></span>
