@@ -19,7 +19,9 @@
                 e.target.classList.toggle('active')
                 this.$store.commit('RESET')
                 this.$store.commit('ADD_CHECKEDCAT', id)
-                this.$store.dispatch('GET_BOOKS', {id:[id], page: 1})
+                this.$store.dispatch('GET_BOOKS')
+                const catsString = this.checkCat.join()
+                this.$router.replace({path: '/', query: {cat: catsString}})
             },
             addActiveClass(id) {
                 if(this.checkCat.indexOf(id) >= 0) {

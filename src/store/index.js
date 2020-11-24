@@ -11,16 +11,19 @@ export default new Vuex.Store({
     books: [],
     checkedCat: [],
     page: 1,
-    next: false
+    next: false,
+    load: false,
+    search: ''
   },
   mutations: {
+    CHANGE_SEARCH(state, payload) {
+      state.search = payload
+    },
     ADD_CATEGORIES(state, payload) {
-      state.categories = payload
+      state.categories = [...payload]
     },
     ADD_BOOKS(state, payload) {
-      payload.forEach(el => {
-        state.books.push(el)
-      })
+      state.books = [...state.books, ...payload]
     },
     ADD_CHECKEDCAT(state, payload) {
       const index = state.checkedCat.indexOf(payload)
@@ -34,11 +37,16 @@ export default new Vuex.Store({
       state.next = payload
     },
     CHANGE_PAGE (state) {
-      state.page++
+      if (state.next) {
+        state.page++
+      }
     },
     RESET(state) {
       state.books = []
       state.page = 1
+    },
+    CHANGE_LOAD(state, payload) {
+      state.load = payload
     }
   },
   actions: {
@@ -58,6 +66,7 @@ export default new Vuex.Store({
     async GET_BOOKS ({commit, state}) {
       if(state.checkedCat.length > 0) {
         try {
+          commit('CHANGE_LOAD', true)
           const res = await axios({
             method: 'POST',
             url: `${keys.API}/book/list`,
@@ -71,6 +80,7 @@ export default new Vuex.Store({
           })
           commit('ADD_BOOKS', res.data.data.list)
           commit('CHANGE_NEXT', res.data.data.next)
+          commit('CHANGE_LOAD', false)
         } catch (e) {
           console.error(e)
         }
